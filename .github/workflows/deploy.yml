@@ -1,0 +1,25 @@
+name: Deploy Pardo Cloud Lab
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: [self-hosted, Linux, X64, pardo-deploy]
+    environment: production
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy website
+        run: |
+          cp website/index.html /srv/pardo-cloud-lab/website/index.html
+
+      - name: Verify deployment
+        run: |
+          curl --fail --silent --show-error http://127.0.0.1:8080/

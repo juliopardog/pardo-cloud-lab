@@ -6,4 +6,4 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./website:/usr/share/nginx/html:ro
+      - /srv/pardo-cloud-lab/website:/usr/share/nginx/html:ro
