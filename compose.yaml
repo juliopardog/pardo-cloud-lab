@@ -1,0 +1,9 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: pardo-web
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./website:/usr/share/nginx/html:ro
