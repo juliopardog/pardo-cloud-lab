@@ -1,8 +1,11 @@
 """Restore the previous static release, retaining the current release on failure."""
 import json
+import fcntl
 from pathlib import Path
 from deploy import swap_link,verify_http
 base=Path('/srv/pardo-cloud-lab/releases')
+lock=(base/'.deploy.lock').open('w')
+fcntl.flock(lock,fcntl.LOCK_EX)
 current,previous=base/'current',base/'previous'
 if not current.is_symlink() or not previous.is_symlink(): raise SystemExit('A current and previous release are required')
 old,target=current.resolve(),previous.resolve()

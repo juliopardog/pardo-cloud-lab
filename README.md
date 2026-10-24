@@ -38,7 +38,7 @@ were explicitly deferred by the owner.
 To roll back manually on the server:
 
 ```sh
-sudo -u github-runner python3 /home/julio/pardo-cloud-lab/scripts/rollback.py
+sudo -u github-runner python3 /usr/local/lib/pardo-cloud-lab/rollback.py
 ```
 
 Nginx is pinned by image digest. Its installed configuration is
@@ -99,6 +99,9 @@ updated by this repository.
 
 Linux password authentication is preserved at the owner's request. The account
 password is unchanged. Keep SSH keys private and review tailnet membership.
+The administrator-installed `scripts/security-maintenance.sh` configures daily
+Ubuntu-base security updates without automatic reboots. Linux Mint-specific,
+Tailscale, and pinned container updates still need periodic review.
 Backups, a real reboot test, router address reservation, and a complete outage
 monitor require follow-up. There is no contact-submission backend; the contact
 page links to the owner's existing GitHub and business website.
