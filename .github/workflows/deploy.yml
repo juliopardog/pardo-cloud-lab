@@ -7,21 +7,44 @@ on:
 
 permissions:
   contents: read
-
+concurrency:
+  group: pardo-production
+  cancel-in-progress: false
 jobs:
+  build:
+    if: github.ref == 'refs/heads/main' && github.repository == 'juliopardog/pardo-cloud-lab'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: python3 scripts/build.py && python3 scripts/verify.py
+      - run: npm run check && npm test
+      - run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - run: docker compose config --quiet
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: website
+          path: website/
+          retention-days: 7
   deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.repository == 'juliopardog/pardo-cloud-lab'
     runs-on: [self-hosted, Linux, X64, pardo-deploy]
     environment: production
     timeout-minutes: 10
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Deploy website
-        run: |
-          cp website/index.html /srv/pardo-cloud-lab/website/index.html
-
-      - name: Verify deployment
-        run: |
-          curl --fail --silent --show-error http://127.0.0.1:8080/
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: website
+          path: release-artifact/
+      - name: Deploy verified static release with automatic rollback
+        run: python3 scripts/deploy.py --source release-artifact

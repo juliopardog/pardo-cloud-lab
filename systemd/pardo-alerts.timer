@@ -1,0 +1,7 @@
+[Unit]
+Description=Check Pardo Cloud Lab for email alert transitions
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=60s
+[Install]
+WantedBy=timers.target

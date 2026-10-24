@@ -1,0 +1,11 @@
+[Unit]
+Description=Refresh Pardo Cloud Lab host telemetry
+
+[Timer]
+OnBootSec=10s
+OnUnitActiveSec=15s
+AccuracySec=1s
+Unit=pardo-telemetry.service
+
+[Install]
+WantedBy=timers.target

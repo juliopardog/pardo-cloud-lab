@@ -4,17 +4,21 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Validate Docker Compose
-        run: docker compose -f compose.yaml config --quiet
-
-      - name: Verify website exists
-        run: test -s website/index.html
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '22'
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: python3 scripts/build.py && python3 scripts/verify.py
+      - run: npm run check && npm test
+      - run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - run: docker compose config --quiet

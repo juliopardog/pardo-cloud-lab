@@ -1,0 +1,11 @@
+actions-runner/
+node_modules/
+__pycache__/
+*.pyc
+.env
+*.env
+!*.env.example
+telemetry/
+*.tar.gz
+*.zip
+website/release.json

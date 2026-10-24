@@ -1,0 +1,10 @@
+[Unit]
+Description=Restrict the Pardo website's Docker port to the LAN and private VPN
+After=docker.service ufw.service
+Requires=docker.service
+[Service]
+Type=oneshot
+ExecStart=/usr/local/lib/pardo-cloud-lab/network-rules.sh
+RemainAfterExit=yes
+[Install]
+WantedBy=multi-user.target
