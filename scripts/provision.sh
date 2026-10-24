@@ -14,6 +14,9 @@ for script in telemetry.py container-monitor.py alerts.py; do
   install -o root -g root -m 644 "$repo/monitoring/$script" "/usr/local/lib/pardo-cloud-lab/$script"
 done
 install -m 644 "$repo/scripts/configure-alerts.py" /usr/local/lib/pardo-cloud-lab/configure-alerts.py
+for script in deploy.py verify.py rollback.py; do
+  install -m 644 "$repo/scripts/$script" "/usr/local/lib/pardo-cloud-lab/$script"
+done
 for unit in "$repo"/systemd/*; do install -m 644 "$unit" /etc/systemd/system/; done
 install -m 644 "$repo/nginx.conf" /etc/pardo-cloud-lab/nginx.conf
 install -m 644 "$repo/compose.yaml" /etc/pardo-cloud-lab/compose.yaml
