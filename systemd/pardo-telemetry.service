@@ -1,0 +1,15 @@
+[Unit]
+Description=Pardo Cloud Lab read-only host snapshot
+After=network.target docker.service pardo-container-monitor.service
+
+[Service]
+Type=oneshot
+User=julio
+Group=julio
+ExecStart=/usr/bin/python3 /usr/local/lib/pardo-cloud-lab/telemetry.py
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/srv/pardo-cloud-lab/website/telemetry /var/lib/pardo-telemetry
+PrivateTmp=true
+TimeoutStartSec=20

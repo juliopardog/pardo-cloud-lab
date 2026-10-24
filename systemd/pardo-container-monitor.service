@@ -1,0 +1,13 @@
+[Unit]
+Description=Read-only snapshot of the Pardo website container
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /usr/local/lib/pardo-cloud-lab/container-monitor.py
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/pardo-container-monitor
+TimeoutStartSec=10

@@ -1,0 +1,15 @@
+[Unit]
+Description=Pardo Cloud Lab email failure and recovery notifications
+ConditionPathExists=/etc/pardo-cloud-lab/alerts.env
+After=network-online.target
+[Service]
+Type=oneshot
+User=julio
+EnvironmentFile=/etc/pardo-cloud-lab/alerts.env
+ExecStart=/usr/bin/python3 /usr/local/lib/pardo-cloud-lab/alerts.py
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+ReadWritePaths=/var/lib/pardo-alerts
+TimeoutStartSec=45
