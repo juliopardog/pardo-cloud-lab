@@ -1,6 +1,8 @@
 name: Deploy Pardo Cloud Lab
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
