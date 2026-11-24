@@ -9,3 +9,5 @@ telemetry/
 *.tar.gz
 *.zip
 website/release.json
+
+pages-site/

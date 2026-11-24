@@ -94,14 +94,36 @@ completely offline; an independent monitor remains a separate setup step.
 Local access: `http://10.0.0.62:8080`. Tailscale allows authorized devices to reach
 the same website without public router port forwards. Each device needs login to
 the owner's tailnet; use the issued server name/address after enrollment.
-The original ChatGPT Sites publication is separate and is not automatically
-updated by this repository.
 
-Linux password authentication is preserved at the owner's request. The account
-password is unchanged. Keep SSH keys private and review tailnet membership.
+SSH access uses keys; password login, root login, and X11 forwarding were disabled
+on the host after key-only access was verified. Keep SSH keys private and review
+tailnet membership.
 The administrator-installed `scripts/security-maintenance.sh` configures daily
 Ubuntu-base security updates without automatic reboots. Linux Mint-specific,
 Tailscale, and pinned container updates still need periodic review.
 Backups, a real reboot test, router address reservation, and a complete outage
 monitor require follow-up. There is no contact-submission backend; the contact
 page links to the owner's existing GitHub and business website.
+
+## Public portfolio for GitHub Pages
+
+Build the separate public artifact:
+
+```sh
+python3 scripts/build_pages.py --base-path /pardo-cloud-lab
+python3 -m unittest discover -s tests -p 'test_pages.py'
+```
+
+Upload only `pages-site/`. Never publish the repository root or a copy of the live
+server directory. The exporter includes an explicit list of pages and static
+assets, fixes links for the project subdirectory, and uses a portfolio adapter
+that makes no private telemetry requests. Host snapshots, history, collectors,
+SMTP configuration, and administration interfaces are excluded. Contact email,
+LinkedIn profile, portrait, and project descriptions are intentionally public.
+The local dashboard and its telemetry build retain their existing behavior.
+
+To publish after review, select **Settings → Pages → Source → GitHub Actions**,
+then manually run **Publish public portfolio** on `main`. The workflow has no
+push trigger. No Funnel, router changes, or home-server availability is required.
+The expected project URL is `https://juliopardog.github.io/pardo-cloud-lab/`.
+A custom domain or root site can use `--base-path ""` instead.
