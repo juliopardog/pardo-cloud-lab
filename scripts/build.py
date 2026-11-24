@@ -12,7 +12,7 @@ os.chdir(ROOT)
 output = ROOT / 'website'
 output.mkdir(exist_ok=True)
 for asset in (ROOT / 'assets').iterdir():
-    if asset.is_file(): shutil.copy2(asset, output / asset.name)
+    if asset.is_file() and asset.name != 'portfolio.js': shutil.copy2(asset, output / asset.name)
 runpy.run_path(str(ROOT / 'generate.py'), run_name='__main__')
 (output / 'robots.txt').write_text('User-agent: *\nDisallow: /\n')
 revision = os.environ.get('GITHUB_SHA') or subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
